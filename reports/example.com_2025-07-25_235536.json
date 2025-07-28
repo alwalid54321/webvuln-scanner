@@ -1,0 +1,294 @@
+{
+  "scan_time": "2025-07-25T23:55:40.593078",
+  "findings_count": 9,
+  "findings": [
+    {
+      "title": "Missing Content-Security-Policy Header",
+      "description": "The Content-Security-Policy header is missing. Helps prevent Cross-Site Scripting (XSS) and data injection attacks.",
+      "url": "https://example.com",
+      "severity": "high",
+      "plugin_name": "security_headers",
+      "id": "247b7254-bd99-40b4-ad34-4b166ad9368a",
+      "timestamp": "2025-07-25T23:55:40.229170",
+      "evidence": "No Content-Security-Policy header was found in the response",
+      "request_data": {
+        "url": "https://example.com",
+        "method": "GET"
+      },
+      "response_data": {
+        "headers": {
+          "accept-ranges": "bytes",
+          "content-type": "text/html",
+          "etag": "\"84238dfc8092e5d9c0dac8ef93371a07:1736799080.121134\"",
+          "last-modified": "Mon, 13 Jan 2025 20:11:20 GMT",
+          "vary": "Accept-Encoding",
+          "content-encoding": "gzip",
+          "cache-control": "max-age=618",
+          "date": "Fri, 25 Jul 2025 19:55:40 GMT",
+          "content-length": "648",
+          "connection": "keep-alive"
+        }
+      },
+      "remediation": "Implement a strong Content-Security-Policy that restricts sources of executable scripts, objects, frames, etc.. Suggested value: default-src 'self'; script-src 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self'; base-uri 'self'; img-src 'self' data:; connect-src 'self';\n\nReference: https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP",
+      "cwe_id": "1021",
+      "cvss_score": null,
+      "false_positive": false,
+      "tags": []
+    },
+    {
+      "title": "Missing X-Content-Type-Options Header",
+      "description": "The X-Content-Type-Options header is missing. Prevents MIME type sniffing.",
+      "url": "https://example.com",
+      "severity": "medium",
+      "plugin_name": "security_headers",
+      "id": "e6539d1f-7921-4046-b7b3-bb4d55c52786",
+      "timestamp": "2025-07-25T23:55:40.229276",
+      "evidence": "No X-Content-Type-Options header was found in the response",
+      "request_data": {
+        "url": "https://example.com",
+        "method": "GET"
+      },
+      "response_data": {
+        "headers": {
+          "accept-ranges": "bytes",
+          "content-type": "text/html",
+          "etag": "\"84238dfc8092e5d9c0dac8ef93371a07:1736799080.121134\"",
+          "last-modified": "Mon, 13 Jan 2025 20:11:20 GMT",
+          "vary": "Accept-Encoding",
+          "content-encoding": "gzip",
+          "cache-control": "max-age=618",
+          "date": "Fri, 25 Jul 2025 19:55:40 GMT",
+          "content-length": "648",
+          "connection": "keep-alive"
+        }
+      },
+      "remediation": "Set X-Content-Type-Options to 'nosniff'. Suggested value: nosniff\n\nReference: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options",
+      "cwe_id": "16",
+      "cvss_score": null,
+      "false_positive": false,
+      "tags": []
+    },
+    {
+      "title": "Missing X-Frame-Options Header",
+      "description": "The X-Frame-Options header is missing. Prevents clickjacking attacks.",
+      "url": "https://example.com",
+      "severity": "medium",
+      "plugin_name": "security_headers",
+      "id": "0472bf21-4464-4460-89a1-15646a9401c6",
+      "timestamp": "2025-07-25T23:55:40.229339",
+      "evidence": "No X-Frame-Options header was found in the response",
+      "request_data": {
+        "url": "https://example.com",
+        "method": "GET"
+      },
+      "response_data": {
+        "headers": {
+          "accept-ranges": "bytes",
+          "content-type": "text/html",
+          "etag": "\"84238dfc8092e5d9c0dac8ef93371a07:1736799080.121134\"",
+          "last-modified": "Mon, 13 Jan 2025 20:11:20 GMT",
+          "vary": "Accept-Encoding",
+          "content-encoding": "gzip",
+          "cache-control": "max-age=618",
+          "date": "Fri, 25 Jul 2025 19:55:40 GMT",
+          "content-length": "648",
+          "connection": "keep-alive"
+        }
+      },
+      "remediation": "Set X-Frame-Options to 'DENY' or 'SAMEORIGIN'. Suggested value: DENY\n\nReference: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options",
+      "cwe_id": "1021",
+      "cvss_score": null,
+      "false_positive": false,
+      "tags": []
+    },
+    {
+      "title": "Missing Strict-Transport-Security Header",
+      "description": "The Strict-Transport-Security header is missing. Ensures the browser only connects to the server over HTTPS.",
+      "url": "https://example.com",
+      "severity": "medium",
+      "plugin_name": "security_headers",
+      "id": "052d35d5-0c23-4d33-9f43-70cf666021ce",
+      "timestamp": "2025-07-25T23:55:40.229397",
+      "evidence": "No Strict-Transport-Security header was found in the response",
+      "request_data": {
+        "url": "https://example.com",
+        "method": "GET"
+      },
+      "response_data": {
+        "headers": {
+          "accept-ranges": "bytes",
+          "content-type": "text/html",
+          "etag": "\"84238dfc8092e5d9c0dac8ef93371a07:1736799080.121134\"",
+          "last-modified": "Mon, 13 Jan 2025 20:11:20 GMT",
+          "vary": "Accept-Encoding",
+          "content-encoding": "gzip",
+          "cache-control": "max-age=618",
+          "date": "Fri, 25 Jul 2025 19:55:40 GMT",
+          "content-length": "648",
+          "connection": "keep-alive"
+        }
+      },
+      "remediation": "Set Strict-Transport-Security with max-age of at least 31536000 (1 year) and include subdomains. Suggested value: max-age=31536000; includeSubDomains; preload\n\nReference: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security",
+      "cwe_id": "319",
+      "cvss_score": null,
+      "false_positive": false,
+      "tags": []
+    },
+    {
+      "title": "Missing X-Xss-Protection Header",
+      "description": "The X-Xss-Protection header is missing. Enables browser's built-in XSS filtering.",
+      "url": "https://example.com",
+      "severity": "low",
+      "plugin_name": "security_headers",
+      "id": "ffd48b18-5d81-4505-89aa-0820147585e0",
+      "timestamp": "2025-07-25T23:55:40.229452",
+      "evidence": "No X-Xss-Protection header was found in the response",
+      "request_data": {
+        "url": "https://example.com",
+        "method": "GET"
+      },
+      "response_data": {
+        "headers": {
+          "accept-ranges": "bytes",
+          "content-type": "text/html",
+          "etag": "\"84238dfc8092e5d9c0dac8ef93371a07:1736799080.121134\"",
+          "last-modified": "Mon, 13 Jan 2025 20:11:20 GMT",
+          "vary": "Accept-Encoding",
+          "content-encoding": "gzip",
+          "cache-control": "max-age=618",
+          "date": "Fri, 25 Jul 2025 19:55:40 GMT",
+          "content-length": "648",
+          "connection": "keep-alive"
+        }
+      },
+      "remediation": "Set X-XSS-Protection to '1; mode=block'. Suggested value: 1; mode=block\n\nReference: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection",
+      "cwe_id": "79",
+      "cvss_score": null,
+      "false_positive": false,
+      "tags": []
+    },
+    {
+      "title": "Missing Referrer-Policy Header",
+      "description": "The Referrer-Policy header is missing. Controls how much referrer information is included with requests.",
+      "url": "https://example.com",
+      "severity": "low",
+      "plugin_name": "security_headers",
+      "id": "12a20187-f534-4657-bfdd-195beaece9af",
+      "timestamp": "2025-07-25T23:55:40.229504",
+      "evidence": "No Referrer-Policy header was found in the response",
+      "request_data": {
+        "url": "https://example.com",
+        "method": "GET"
+      },
+      "response_data": {
+        "headers": {
+          "accept-ranges": "bytes",
+          "content-type": "text/html",
+          "etag": "\"84238dfc8092e5d9c0dac8ef93371a07:1736799080.121134\"",
+          "last-modified": "Mon, 13 Jan 2025 20:11:20 GMT",
+          "vary": "Accept-Encoding",
+          "content-encoding": "gzip",
+          "cache-control": "max-age=618",
+          "date": "Fri, 25 Jul 2025 19:55:40 GMT",
+          "content-length": "648",
+          "connection": "keep-alive"
+        }
+      },
+      "remediation": "Set Referrer-Policy to 'no-referrer' or 'strict-origin-when-cross-origin'. Suggested value: strict-origin-when-cross-origin\n\nReference: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy",
+      "cwe_id": "200",
+      "cvss_score": null,
+      "false_positive": false,
+      "tags": []
+    },
+    {
+      "title": "Missing Permissions-Policy Header",
+      "description": "The Permissions-Policy header is missing. Controls which browser features and APIs can be used in the document.",
+      "url": "https://example.com",
+      "severity": "low",
+      "plugin_name": "security_headers",
+      "id": "eabc2b69-7c24-4c5e-b881-91894b408408",
+      "timestamp": "2025-07-25T23:55:40.229558",
+      "evidence": "No Permissions-Policy header was found in the response",
+      "request_data": {
+        "url": "https://example.com",
+        "method": "GET"
+      },
+      "response_data": {
+        "headers": {
+          "accept-ranges": "bytes",
+          "content-type": "text/html",
+          "etag": "\"84238dfc8092e5d9c0dac8ef93371a07:1736799080.121134\"",
+          "last-modified": "Mon, 13 Jan 2025 20:11:20 GMT",
+          "vary": "Accept-Encoding",
+          "content-encoding": "gzip",
+          "cache-control": "max-age=618",
+          "date": "Fri, 25 Jul 2025 19:55:40 GMT",
+          "content-length": "648",
+          "connection": "keep-alive"
+        }
+      },
+      "remediation": "Implement a Permissions-Policy to restrict access to sensitive features like camera, microphone, geolocation. Suggested value: camera=(), microphone=(), geolocation=(), interest-cohort=()\n\nReference: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Permissions-Policy",
+      "cwe_id": "16",
+      "cvss_score": null,
+      "false_positive": false,
+      "tags": []
+    },
+    {
+      "title": "Missing Feature-Policy Header",
+      "description": "The Feature-Policy header is missing. Controls which browser features and APIs can be used in the document.",
+      "url": "https://example.com",
+      "severity": "low",
+      "plugin_name": "security_headers",
+      "id": "00459e1a-b423-4b1f-b452-1aae36658629",
+      "timestamp": "2025-07-25T23:55:40.229646",
+      "evidence": "No Feature-Policy header was found in the response",
+      "request_data": {
+        "url": "https://example.com",
+        "method": "GET"
+      },
+      "response_data": {
+        "headers": {
+          "accept-ranges": "bytes",
+          "content-type": "text/html",
+          "etag": "\"84238dfc8092e5d9c0dac8ef93371a07:1736799080.121134\"",
+          "last-modified": "Mon, 13 Jan 2025 20:11:20 GMT",
+          "vary": "Accept-Encoding",
+          "content-encoding": "gzip",
+          "cache-control": "max-age=618",
+          "date": "Fri, 25 Jul 2025 19:55:40 GMT",
+          "content-length": "648",
+          "connection": "keep-alive"
+        }
+      },
+      "remediation": "Implement a Permissions-Policy to restrict access to sensitive features like camera, microphone, geolocation. Suggested value: camera 'none'; microphone 'none'; geolocation 'none'; interest-cohort 'none'\n\nReference: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Permissions-Policy",
+      "cwe_id": "16",
+      "cvss_score": null,
+      "false_positive": false,
+      "tags": []
+    },
+    {
+      "title": "Suboptimal Cache-Control Header",
+      "description": "The Cache-Control header is present but not configured optimally for security. Controls how pages are cached by browsers and proxies.",
+      "url": "https://example.com",
+      "severity": "low",
+      "plugin_name": "security_headers",
+      "id": "278199d2-3072-4a17-a5fa-a06aa5bbccb1",
+      "timestamp": "2025-07-25T23:55:40.229758",
+      "evidence": "Cache-Control: max-age=618",
+      "request_data": {
+        "url": "https://example.com",
+        "method": "GET"
+      },
+      "response_data": {
+        "headers": {
+          "cache-control": "max-age=618"
+        }
+      },
+      "remediation": "For sensitive pages, set Cache-Control to 'no-store, no-cache, must-revalidate, max-age=0'. Current value: max-age=618\nSuggested value: no-store, no-cache, must-revalidate, max-age=0\n\nReference: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control",
+      "cwe_id": "524",
+      "cvss_score": null,
+      "false_positive": false,
+      "tags": []
+    }
+  ]
+}

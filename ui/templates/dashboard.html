@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Vulnerability Scanner - Dashboard</title>
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/socket.io@4.5.4/client-dist/socket.io.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="#f1c40f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M2 17L12 22L22 17" stroke="#f1c40f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M2 12L12 17L22 12" stroke="#f1c40f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <h1>Web<span>Vuln</span>Scanner</h1>
+            </div>
+            <div class="status" id="status-indicator">
+                <span class="status-dot"></span>
+                <span class="status-text">Idle</span>
+            </div>
+        </header>
+
+        <div class="dashboard-grid">
+            <section class="control-panel card">
+                <h2>Scan Control</h2>
+                <div class="form-group">
+                    <label for="target-url">Target URL</label>
+                    <input type="url" id="target-url" placeholder="https://example.com" value="https://example.com">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="scan-depth">Max Depth</label>
+                        <input type="number" id="scan-depth" min="1" max="10" value="3">
+                    </div>
+                    <div class="form-group">
+                        <label for="scan-delay">Delay (s)</label>
+                        <input type="number" id="scan-delay" min="0" max="10" step="0.1" value="0.5">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="scan-timeout">Timeout (s)</label>
+                        <input type="number" id="scan-timeout" min="5" max="120" value="30">
+                    </div>
+                    <div class="form-group">
+                        <label for="scan-threads">Threads</label>
+                        <input type="number" id="scan-threads" min="1" max="10" value="1">
+                    </div>
+                </div>
+                <div class="plugin-options">
+                    <h3>Active Plugins</h3>
+                    <div class="plugin-toggles">
+                        <label class="toggle">
+                            <input type="checkbox" checked id="plugin-sql">
+                            <span class="toggle-label">SQL Injection</span>
+                        </label>
+                        <label class="toggle">
+                            <input type="checkbox" checked id="plugin-xss">
+                            <span class="toggle-label">XSS</span>
+                        </label>
+                        <label class="toggle">
+                            <input type="checkbox" checked id="plugin-traversal">
+                            <span class="toggle-label">Directory Traversal</span>
+                        </label>
+                        <label class="toggle">
+                            <input type="checkbox" checked id="plugin-redirect">
+                            <span class="toggle-label">Open Redirect</span>
+                        </label>
+                        <label class="toggle">
+                            <input type="checkbox" checked id="plugin-headers">
+                            <span class="toggle-label">Security Headers</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="button-group">
+                    <button id="test-connectivity" class="btn btn-info">Test Connectivity</button>
+                    <button id="start-scan" class="btn btn-primary">Start Scan</button>
+                    <button id="pause-scan" class="btn btn-secondary" disabled>Pause</button>
+                    <button id="stop-scan" class="btn btn-danger" disabled>Stop</button>
+                </div>
+            </section>
+
+            <section class="stats-panel card">
+                <h2>Scan Statistics</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-value" id="stat-urls">0</span>
+                        <span class="stat-label">URLs Scanned</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-value" id="stat-findings">0</span>
+                        <span class="stat-label">Total Findings</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-value" id="stat-duration">00:00</span>
+                        <span class="stat-label">Elapsed Time</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-value" id="stat-urls-per-sec">0</span>
+                        <span class="stat-label">URLs/sec</span>
+                    </div>
+                </div>
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span>Scan Progress</span>
+                        <span id="progress-percentage">0%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="scan-progress" style="width: 0%"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="chart-container card">
+                <h2>Findings by Severity</h2>
+                <canvas id="severity-chart"></canvas>
+            </section>
+
+            <section class="findings-panel card">
+                <div class="findings-header">
+                    <h2>Vulnerability Findings</h2>
+                    <div class="findings-filters">
+                        <select id="severity-filter">
+                            <option value="">All Severities</option>
+                            <option value="CRITICAL">Critical</option>
+                            <option value="HIGH">High</option>
+                            <option value="MEDIUM">Medium</option>
+                            <option value="LOW">Low</option>
+                            <option value="INFO">Info</option>
+                        </select>
+                        <input type="text" id="search-findings" placeholder="Search findings...">
+                    </div>
+                </div>
+                <div class="findings-table-container">
+                    <table class="findings-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Severity</th>
+                                <th>Title</th>
+                                <th>URL</th>
+                                <th>Plugin</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="findings-table-body">
+                            <!-- Findings will be dynamically inserted here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+
+        <div class="modal" id="finding-details-modal">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <h2 id="modal-title">Finding Details</h2>
+                <div class="modal-body" id="finding-details">
+                    <!-- Finding details will be inserted here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/dashboard.js"></script>
+</body>
+</html>
